@@ -4,14 +4,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 public class PerfomanceProxy implements Calculator {
-    Calculator calculator;
+    private Calculator calculator;
+    private boolean isMetric;
 
     public PerfomanceProxy(Calculator calculator) {
         this.calculator = calculator;
-    }
-
-    @Override
-    public int calc(int number) {
         Method method = null;
         try {
             method = Calculator.class.getMethod("calc", int.class);
@@ -19,7 +16,12 @@ public class PerfomanceProxy implements Calculator {
             e.printStackTrace();
         }
         Annotation annotation = method.getAnnotation(Metric.class);
-        if (annotation != null) {
+        isMetric=annotation!=null;
+    }
+
+    @Override
+    public int calc(int number) {
+        if (isMetric) {
             long startTime = System.nanoTime();
             int result = calculator.calc(number);
             System.out.println("Затрачено секунд:"+(System.nanoTime() - startTime) / 1_000_000_000.0);
