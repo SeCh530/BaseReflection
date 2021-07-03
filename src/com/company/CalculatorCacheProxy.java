@@ -9,7 +9,7 @@ public class CalculatorCacheProxy implements Calculator {
     private HashMap<Integer, Integer> cachedValues=new HashMap<>();
 
     public void clearCache() {
-        calculator = null;
+        cachedValues = =new HashMap<>();
     }
 
     @Override
